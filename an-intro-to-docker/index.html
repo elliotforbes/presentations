@@ -1,0 +1,407 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>An Introduction to Docker</title>
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/league.css">
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section data-transition="convex">
+				<img src="images/docker.png" alt="">
+				<br/>
+				<h2 style="color: #54baeb">An Introduction to Docker!</h2>
+			</section>
+			<section data-transition="convex" data-markdown>
+				#	Survey:
+
+				* Hands up if you know roughly what Docker is
+			</section>
+			<section data-transition="convex" data-markdown>
+				#	Survey:
+
+				* Hands up if you know roughly what Vagrant is
+			</section>
+
+			<section data-transition="convex" data-markdown>
+				#	A Brief Intro to Docker?
+			</section>
+			<section data-transition="convex" data-markdown>
+				## It's a Container Technology!
+			</section>
+			<section data-transition="convex" data-markdown>
+				# How Does it Work?
+				
+				You simply define the prefect environment your application needs to run in and specify the start commands. 
+			</section>
+			<section data-transition="convex" data-markdown>
+				# Vagrant Comparison
+				
+				"Vagrant is a tool focused on providing a consistent development environment workflow across multiple operation systems. Docker is a container management that can consistently run software as long as a containerization system exists." - HashiCorp. 
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Why do we need Docker?
+				
+				* It runs everywhere that docker can!
+				* New developers can get started with minimal fuss
+				* No more "But it works on my machine!"
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Multi-Cloud Support
+				
+				Most, if not all major Cloud service providers support the deployment and management of Docker based applications
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Migrating Your Legacy Applications
+
+				The good news? It can be fairly easy to migrate your Legacy applications to use Docker. You can replicate your VSI/PSI environment setup using a RedHat image and provide it with all of your configuration. 
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Docker images
+
+				Docker images are built up from a series of layers. Each layer is an instruction in your image's Dockerfile. You can build custom images for your application or use pre-existing images from Docker Hub if you need a quick and simple solution. 
+			</section>
+
+
+			<!-- STORY TIME -->
+			<section data-transition="convex" data-markdown>
+				## Story Time
+			</section>
+			<section data-transition="convex" data-markdown>
+				## A Tale of 2 Developers
+
+				Meet Donna and Donald
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Dave
+
+				Dave goes off and builds a Python REST API using Python 3.6
+			</section>
+			<section data-transition="convex" data-markdown>
+				<script type="text/template">
+					## The Application
+					
+					A simple aiohttp based API that returns `success` when hit on port 8080
+
+					```
+					from aiohttp import web
+					import json
+
+					async def handle(request):
+							response_obj = { 'status' : 'success' }
+							return web.Response(text=json.dumps(response_obj))
+
+					app = web.Application()
+					app.router.add_get('/', handle)
+
+					web.run_app(app)
+					```
+				</script>
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Donna
+
+				He tries to share this with Donna, who is a hardcore Data Scientist and uses Python 2.7
+			</section>
+			
+			<section data-transition="convex" data-markdown>
+				## Donna
+
+				Donna pulls down the code from the repository. She tries to run the app calling `python app.py` and hits versioning issues.
+			</section>
+			<section data-transition="convex" data-markdown>
+				![Donna](images/employee-1-not-working.png)
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Donna
+
+				She contacts Dave who informs her she has to update to version 3.6 and run both versions side by side on her work machine.
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Donna
+
+				She installs Python 3.6 and spends a couple of hours setting up environment variables so that she can easily switch between both.
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Donald
+
+				Donald tries to run the code locally and realizes he's working with out of date Python packages. He spends some time updating these packages and subsequently breaking other microservices on his machine reliant on older features.
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Donald
+
+				![](images/employee-2-working.png)
+			</section>
+			<section data-transition="convex" data-markdown>
+				## How Docker Fixes These Issues
+			</section>
+			<section data-transition="convex" data-markdown>
+				By capturing the exact environment your application needs to run in a Dockerfile, you eliminate the wasted time your colleagues spend trying to get their environment just right. 
+			</section>
+			<section data-transition="convex" data-markdown>
+				You eliminate Donald's problem of impacting other services running locally, each will have immutable dependencies with set versions.
+			</section>
+			<section data-transition="convex" data-markdown>
+				You can run loads of different docker containers side-by-side, each with their own versions of various libraries.
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Implementing a Solution
+
+				Let's see how we could implement Docker for our Python application and eradicate these issues. 
+			</section>
+			<section data-transition="convex" data-markdown>
+				<script type="text/template">
+					## The Dockerfile
+					
+					This is placed in the root of our project.
+
+					```
+					FROM python:3.6.3
+					WORKDIR /app
+					ADD . /app
+					RUN pip install -r requirements.txt
+					EXPOSE 80
+					ENV DB_PASS dolphins
+					CMD ["python", "app.py"]
+					```
+				</script>
+			</section>
+			<section data-transition="convex" data-markdown>
+				<script type="text/template">
+					It contains the base image we wish to construct our container from, in this case Python 3.6.3
+
+					```
+					FROM python:3.6.3
+					WORKDIR /app
+					ADD . /app
+					RUN pip install -r requirements.txt
+					EXPOSE 80
+					ENV DB_PASS dolphins
+					CMD ["python", "app.py"]
+					```
+				</script>
+			</section>
+
+			<section data-transition="convex" data-markdown>
+				<script type="text/template">
+					The `WORKDIR` command specifies that we want any subsequent commands to execute within an `/app` directory.
+
+					```
+					FROM python:3.6.3
+					WORKDIR /app
+					ADD . /app
+					RUN pip install -r requirements.txt
+					EXPOSE 80
+					ENV DB_PASS dolphins
+					CMD ["python", "app.py"]
+					```
+				</script>
+			</section>
+			<section data-transition="convex" data-markdown>
+				<script type="text/template">
+					We then copy our projects contents into our image's `/app` directory with the `ADD` command.
+
+					```
+					FROM python:3.6.3
+					WORKDIR /app
+					ADD . /app
+					RUN pip install -r requirements.txt
+					EXPOSE 80
+					ENV DB_PASS dolphins
+					CMD ["python", "app.py"]
+					```
+				</script>
+			</section>
+			<section data-transition="convex" data-markdown>
+				<script type="text/template">
+					We then copy our projects contents into our image's `/app` directory with the `ADD` command.
+
+					```
+					FROM python:3.6.3
+					WORKDIR /app
+					ADD . /app
+					RUN pip install -r requirements.txt
+					EXPOSE 80
+					ENV DB_PASS dolphins
+					CMD ["python", "app.py"]
+					```
+				</script>
+			</section>
+			<section data-transition="convex" data-markdown>
+				<script type="text/template">
+					We the use the RUN command to execute some commands necessary for our app to run, in this case, we want to install our applications required packages.
+
+					```
+					FROM python:3.6.3
+					WORKDIR /app
+					ADD . /app
+					RUN pip install -r requirements.txt
+					EXPOSE 8080
+					ENV DB_PASS dolphins
+					CMD ["python", "app.py"]
+					```
+				</script>
+			</section>
+
+
+
+			<section data-transition="convex" data-markdown>
+					<script type="text/template">
+						## Building our Image
+
+						Once Dave was happy that the docker image had everything, he could run the following docker command:
+						
+						```
+						docker build -t new-service .
+						```
+					</script>
+			</section>
+			<section data-transition="convex" data-markdown>
+					<script type="text/template">
+						## Running Our Image
+
+						We specify that our container will run on port 9000 on our machine and will forward any requests to port 8080 running within our docker container.
+						
+						```
+						docker run -p 9000:8080 employee-2
+						```
+					</script>
+			</section>
+
+			<section data-transition="convex" data-markdown>
+				## It Works!
+
+				Open up http://localhost:9000 in your local browser.
+
+				![](images/port-9000.png)
+			</section>
+
+			<section data-transition="convex" data-markdown>
+				We now have a working application that is portable across multiple cloud service providers, multiple operating systems, or any device/system that can run docker.
+
+				![](images/port-9000.png)
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Making Changes
+
+				Ok, so how do we make a change?
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Rebuilding our Docker Image
+
+				In order to make changes to our Docker based application, we'll have to rebuild our image once we are happy with changes.
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Cached Steps
+
+				When you make changes to your application and run `docker build` once again, you should notice it runs a hell of a lot faster.
+
+				![cached docker](images/cached-build.png)
+			</section>
+			<section data-transition="convex" data-markdown>
+					<script type="text/template">
+						## Optimizations
+
+						In this particular example, you'll see that for some reason it reinstalls our python dependencies on change. We can avoid this by optimizing our Dockerfile:
+						
+						```
+						FROM python:3.6.5
+						WORKDIR /app
+						ADD ./requirements.txt /app/requirements.txt
+						RUN pip install -r requirements.txt
+						ADD . /app
+						EXPOSE 8080
+						CMD ["python", "app.py"]
+						```
+					</script>
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Faster!
+
+				When you now start making changes, you should notice almost instantaneous builds as our pip install step is now cached.
+
+				![cached docker](images/cached-build.png)
+			</section>
+
+			<section data-transition="convex" data-markdown>
+				## Introducing Docker Hub Image Registry
+
+				Docker Hub is an image registry that contains thousands of different pre-built docker images. These can be pulled down and run in a matter of minutes.
+
+				
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Introducing Docker Hub Image Registry
+
+				Fancy a RabbitMQ instance on your local machine? Pull down the RabbitMQ image and start it. Easy.
+
+				![](images/docker-hub.png)
+				
+			</section>
+
+			<section data-transition="convex" data-markdown>
+				## Good Resources
+
+				* [9 Docker Common Mistakes](https://runnable.com/blog/9-common-dockerfile-mistakes)
+				* [An Introduction to Docker - Nigel Poulton](https://app.pluralsight.com/library/courses/docker-getting-started/table-of-contents)
+				* []
+			</section>
+
+			<section data-transition="convex" data-markdown>
+				## Q&amp;A
+			</section>
+
+			<!--END OF STORY TIME-->
+
+
+			
+
+			<section data-transition="convex" data-markdown>
+				## How do you manage a million containers? 
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Enter: Kubernetes
+				
+			</section>
+
+		</div>
+	</div>
+
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
+
+	<script>
+		// More info about config & dependencies:
+		// - https://github.com/hakimel/reveal.js#configuration
+		// - https://github.com/hakimel/reveal.js#dependencies
+		Reveal.initialize({
+			dependencies: [
+				{ src: 'plugin/markdown/marked.js' },
+				{ src: 'plugin/markdown/markdown.js' },
+				{ src: 'plugin/notes/notes.js', async: true },
+				{ src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } }
+			]
+		});
+	</script>
+</body>
+
+</html>
