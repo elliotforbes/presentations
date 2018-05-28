@@ -40,6 +40,7 @@
 			<section data-transition="convex">
 				<h2 style="color: #54baeb">Application Resiliency</h2>
 				<p style="color: #fff">Making Your App Indestructible</p>
+				<p style="color: #fff">Elliot Forbes</p>
 			</section>
 			<section data-transition="convex" data-markdown>
 				## Structure
@@ -144,24 +145,49 @@
 				* Bulkheads
 				* Circuit Breakers
 				* Queueing Systems
-				* Leader Elections
+				* to name but a few...
 			</section>
 			<section data-transition="convex" data-markdown>
 				## Bulkheads
+
+				These work in a similar fashion to how they work on ships. They attempt to isolate failure to a certain part of the application and prevent a failure from cascading and bringing everything down.
+
+				![Bulkheads](images/bulkhead.gif)
 			</section>
 			<section data-transition="convex" data-markdown>
 				## Circuit Breakers
+
+				Circuit breakers allow you to essentially fail over to another system or code path should it start seeing higher error rates.
 			</section>
 			<section data-transition="convex" data-markdown>
 				## Queueing Systems
+
+				For applications that have to deal with massive amounts of dynamic load, queueing systems can help prevent your application being swamped and overwhelmed. 
+
+				![queue](images/queue.htm)
 			</section>
 			<section data-transition="convex" data-markdown>
-				## Leader Elections
+				## More Resiliency Patterns
+
+				Soo many to talk about, soo little time. The onus is on you to do your research.
 			</section>
 			<section data-transition="convex" data-markdown>
-				## Good Resources
+				## More Resiliency Patterns
+
+				Craft applications that can withstand the test of time and become legacy in their own right.
+			</section>
+			<section data-transition="convex" data-markdown>
+				## More Resiliency Patterns
+
+				The key thing to note is that legacy systems are only legacy because they’ve been successful enough to last this long.
+			</section>
+			
+			<section data-transition="convex" data-markdown>
+				## More Information
 				
-				* [https://docs.microsoft.com/en-us/azure/architecture/patterns/category/resiliency](https://docs.microsoft.com/en-us/azure/architecture/patterns/category/resiliency)
+				There are some excellent resources online for further reading:
+
+				* [Azure Resiliency Patterns](https://docs.microsoft.com/en-us/azure/architecture/patterns/category/resiliency)
 			</section>
 			<section data-transition="convex" data-markdown>
 				## Q&A
