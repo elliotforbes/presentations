@@ -94,7 +94,57 @@
 				It's critical that you follow these when designing and developing **any** application. These can help to massively improve how you work with Monolithic legacy applications.
 			</section>
 			<section data-transition="convex" data-markdown>
+				## The 12 Factors - The Highlights
+
+				Some of the more useful factors are:
+			</section>
+			<section data-transition="convex" data-markdown>
+				## The 12 Factors - II. Dependencies
+
+				Explicitly declare and isolate dependencies. Technologies like Docker help you achieve this.
+			</section>
+			<section data-transition="convex" data-markdown>
+				## The 12 Factors - III. Config
+
+				Store config in the environment. CloudFoundry helps you to achieve this by injecting credentials into the applications environment at startup.
+			</section>
+			<section data-transition="convex" data-markdown>
+				## The 12 Factors - VI. Processes
+
+				Execute the app as one or more stateless processes. Store all state in some form of database.
+
+				If you lose one process, it doesn't impact you, just spin up another to replace it.
+			</section>
+			<section data-transition="convex" data-markdown>
+				## The 12 Factors - VIII. Concurrency
+
+				Scale out via the process model. 
+
+				This is similar to VI. and allows you to front your application with a load balancer and scale to handle dynamic workload.
+			</section>
+			<section data-transition="convex" data-markdown>
+				## The 12 Factors - XI. Logs
+
+				Treat logs as event streams.
+
+				Don't store logs on the file system, stream them out to log handling services such as Splunk and handle them as events.
+			</section>
+			<section data-transition="convex" data-markdown>
+				## The 12 Factors - XI. Logs
+
+				Treat logs as event streams.
+
+				This greatly improves the way you debug your distributed systems.
+			</section>
+			<section data-transition="convex" data-markdown>
 				## Application Resiliency Patterns
+
+				For non-standard applications, we can use a number of different resiliency patterns.
+
+				* Bulkheads
+				* Circuit Breakers
+				* Queueing Systems
+				* Leader Elections
 			</section>
 			<section data-transition="convex" data-markdown>
 				## Bulkheads
