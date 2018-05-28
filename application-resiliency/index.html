@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-	<title>An Introduction to Docker</title>
+	<title>Application Resiliency</title>
 
 	<link rel="stylesheet" href="css/reveal.css">
 	<link rel="stylesheet" href="css/theme/moon.css">
@@ -21,41 +21,100 @@
 		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
 		document.getElementsByTagName('head')[0].appendChild(link);
 	</script>
+	<style>
+	h2 {
+		color: white !important;
+	}
+	p {
+		color: white !important;
+	}
+	ul li {
+		color: white !important;
+	}
+	</style>
 </head>
 
 <body>
 	<div class="reveal">
 		<div class="slides">
 			<section data-transition="convex">
-				<img src="images/docker.png" alt="">
-				<br/>
-				<h2 style="color: #54baeb">An Introduction to Docker!</h2>
+				<h2 style="color: #54baeb">Application Resiliency</h2>
+				<p style="color: #fff">Making Your App Indestructible</p>
 			</section>
 			<section data-transition="convex" data-markdown>
-				## What is Docker?
+				## Structure
+				
+				* An overview of resiliency
+				* A brief overview of some of the biggest application resiliency patterns
+				* General Q&A
 			</section>
 			<section data-transition="convex" data-markdown>
-				## It's a Container Technology!
+				## Servers don't last forever... 
 			</section>
 			<section data-transition="convex" data-markdown>
+				They encounter hardware faults, networking issues, power outages and so on... 
+			</section>
+			<section data-transition="convex" data-markdown>
+				There is an infinite number of reasons as to why your server could die.
+			</section>
+			<section data-transition="convex" data-markdown>
+				Thus, we need to ensure that we don't have single points of failure 
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Less Like This
 
-				<script type="text/template">
-							## A Basic Docker Example
-	
-							Below is a fully functioning Dockerfile for a Python 3.6 application
-	
-							```
-							FROM python:3.6.3
-							WORKDIR /app
-							ADD . /app
-							RUN pip install -r requirements.txt
-							EXPOSE 80
-							ENV DB_PASS dolphins
-							CMD ["python", "app.py"]
-							```
-					</script>
+				![house of cards](images/card-house.gif)
+			</section>
+			<section data-transition="convex" data-markdown>
+				## More Like This...
 
-				<section>Hi</section>
+				![tis but a scratch](images/tis-but-scratch.gif)
+			</section>
+
+			<section data-transition="convex" data-markdown>
+				 ## How Do We Do This?
+			</section>
+			<section data-transition="convex" data-markdown>
+				 ## A Number of Options
+
+				 * Follow the 12 Factors 
+				 * Don't rely on particular Servers and treat underlying hardware as a commodity
+				 * Use of Application Resiliency Patterns
+			</section>
+			<section data-transition="convex" data-markdown>
+				 ## The 12 Factors
+
+				![12 Commandments](images/commandments.gif)
+
+				These help to ensure that your applications can scale to meet growing demand and can be deployed to new servers at a moments notice.
+			</section>
+			<section data-transition="convex" data-markdown>
+				## The 12 Factors
+
+				It's critical that you follow these when designing and developing **any** application. These can help to massively improve how you work with Monolithic legacy applications.
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Application Resiliency Patterns
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Bulkheads
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Circuit Breakers
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Queueing Systems
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Leader Elections
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Good Resources
+				
+				* [https://docs.microsoft.com/en-us/azure/architecture/patterns/category/resiliency](https://docs.microsoft.com/en-us/azure/architecture/patterns/category/resiliency)
+			</section>
+			<section data-transition="convex" data-markdown>
+				## Q&A
 			</section>
 		</div>
 	</div>
