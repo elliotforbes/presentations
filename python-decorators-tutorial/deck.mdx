@@ -1,0 +1,181 @@
+import {
+  CodeSurfer,
+  CodeSurferColumns,
+  Step,
+} from "code-surfer";
+import { github, vsDark } from "@code-surfer/themes";
+
+export const theme = vsDark;
+
+<img src="https://images.tutorialedge.net/images/logo.svg" style="width: 200px; height: auto; padding: 20px;" />
+
+# 🐍 Python Decorators Tutorial 🔥
+
+Follow Me on Twitter [@Elliot_f](https://twitter.com/elliot_f) and Subscribe 🤓
+
+
+```py
+@decorators
+def forBeginners():
+  print("This is Awesome!")
+```
+
+---
+
+<CodeSurfer>
+
+```py title="Python Decorators" subtitle="Examples in the wild..."
+from flask import Flask
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    return "Hello World!"
+```
+
+```py title="First Class Citizens" subtitle="Passing Functions to other Functions..."
+def myFunction():
+  print("Hello")
+
+def anotherFunction(function):
+  print(function)
+
+anotherFunction(myFunction)
+
+```
+
+```diff 1:2 subtitle="Let's define a really simple function"
+
+```
+
+```diff 4:5 subtitle="and now let's define another function which takes in a single parameter"
+
+```
+
+```diff 6:7 subtitle="Let's try passing our first function to our second function. What is the result?"
+
+```
+
+</CodeSurfer>
+
+---
+
+<CodeSurfer>
+
+```py title="The Results:" subtitle="It Works! - The program prints out the definition of 'myFunction'"
+
+$ python3.6 decorators.py
+function myFunction at 0x100562e18
+```
+
+</CodeSurfer>
+
+---
+
+<CodeSurfer>
+
+```py title="A Simple Decorator" subtitle="Let's define an incredibly simple decorator that wraps our function in 2 print statements"
+def mutate(method):
+    def newmethod(*args, **kwargs):
+        print("Executing Method")
+        method(*args, **kwargs)
+        print("Finished Executing Method")
+    return newmethod
+
+@mutate
+def myFunction():
+    print("Hello")
+
+myFunction()
+
+```
+
+```diff 1:7 title="This is the code for our decorator" subtitle=""
+
+```
+
+
+```diff 7:8 subtitle="Let's add the @mutate decorator to our myFunction function"
+
+```
+
+```diff 8:10 subtitle="Notice we haven't changed anything within our myFunction body..."
+
+```
+
+```diff 12:12 subtitle="Let's now try calling our function... What happens?"
+
+```
+
+</CodeSurfer>
+
+---
+
+<CodeSurfer>
+
+```py title="The Results" subtitle="You'll see that the decorator has wrapped our function with 2 print statements!"
+ $ python3.6 decorators.py
+Executing Method
+Hello
+Finished Executing Method
+```
+
+</CodeSurfer>
+
+---
+
+# Problem! - Loss of Traceability
+
+---
+
+# Solution - functools
+
+---
+
+<CodeSurfer>
+
+```py title="We can use the functools package" subtitle="This will help retain our programs traceability!"
+from functools import *
+
+def mutate(method):
+    @wraps(method)
+    def newmethod(*args, **kwargs):
+        print("Executing Method")
+        method(*args, **kwargs)
+        print("Finished Executing Method")
+    return newmethod
+
+@mutate
+def myFunction():
+    print("Hello")
+
+myFunction()
+```
+
+```diff 1:2 subtitle="We first need to import the package"
+
+```
+
+```diff 4:4 title="decorator inception..." subtitle="We need to add this decorator within our decorator function"
+
+```
+
+</CodeSurfer>
+
+
+---
+
+<CodeSurfer>
+
+```py
+repr(myFunction)
+function myFunction at 0x1022d3e18
+```
+
+</CodeSurfer>
+
+---
+
+# Like and Subscribe for More! 🔥
+
+> Follow me on Twitter: [@Elliot_f](https://twitter.com/elliot_f)
